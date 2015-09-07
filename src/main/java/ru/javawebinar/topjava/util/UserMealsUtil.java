@@ -37,9 +37,14 @@ public class UserMealsUtil {
             dates.merge(meal.getDateTime().toLocalDate(), meal.getCalories(), Integer::sum);
         }
 */
+/*
         Map<LocalDate, Integer> dates = mealList.
                 stream().
                 collect(Collectors.groupingBy(m -> m.getDateTime().toLocalDate(), HashMap::new, Collectors.summingInt(UserMeal::getCalories)));
+*/
+        Map<LocalDate, Integer> dates = mealList.
+                stream().
+                collect(Collectors.toMap(m -> m.getDateTime().toLocalDate(), UserMeal::getCalories, (a, b) -> a + b));
         return mealList.
                 stream().
                 filter(m -> TimeUtil.isBetween(m.getDateTime().toLocalTime(), startTime, endTime)).
