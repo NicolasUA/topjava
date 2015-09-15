@@ -31,32 +31,30 @@
                     <td>${meal.getDescription()}</td>
                     <td align="center">${meal.getCalories()}</td>
                     <td align="center">
-                        <a style="width: 48%" href="meal?action=edit&id=${loopCounter.count - 1}" class="pure-button">
-                            Edit
-                        </a>
-                        <a style="width: 48%" href="meal?action=delete&id=${loopCounter.count - 1}" class="pure-button"
-                                onclick="return confirm('Are you sure you want to delete this meal?')">
-                            Delete
-                        </a>
+                        <form style="margin: 0" class="pure-form" method="post" action="meal">
+                            <input type="hidden" name="id" value="${loopCounter.count - 1}">
+                            <button style="width: 45%;" class="pure-button" type="submit" name="action"
+                                    value="edit">Edit</button>
+                            <button style="width: 45%;" class="pure-button" type="submit" name="action" value="delete"
+                                    onclick="return confirm('Are you sure you want to delete this meal?')">Delete</button>
+                        </form>
                     </td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
-    <form style="width: 1000px" method="get" action="meal" class="pure-form">
+    <form style="width: 1000px" method="post" action="meal" class="pure-form">
         <fieldset>
-            <%
-                String editdata = pageContext.findAttribute("editMeal") == null ? "" :
-                        ((UserMeal)pageContext.findAttribute("editMeal"))
-                                .getDateTime().format(MealServlet.DATEFORMAT);
-            %>
-            <input style="width: 25%" type="text" placeholder="DateTime" name="dateTime" value="<%=editdata%>">
-            <input style="width: 40%" type="text" placeholder="Description" name="description" value="${editMeal.getDescription()}">
-            <input style="width: 10%" type="number" placeholder="Calories" name="calories" value="${editMeal.getCalories()}">
+            <input style="width: 25%; text-align: center" type="text" placeholder="DateTime" name="dateTime"
+                   value="<%=pageContext.findAttribute("editMeal") == null ? "" :
+                        ((UserMeal)pageContext.findAttribute("editMeal")).getDateTime().format(MealServlet.DATEFORMAT)%>">
+            <input style="width: 40%" type="text" placeholder="Description" name="description"
+                   value="${editMeal.getDescription()}">
+            <input style="width: 10%; text-align: center" type="number" placeholder="Calories" name="calories"
+                   value="${editMeal.getCalories()}">
             <input type="hidden" name="id" value="${id}">
-            <input type="hidden" name="action" value="add">
-            <button style="width: 11%" type="submit" class="pure-button">Save</button>
-            <a style="width: 11%" href="meal" class="pure-button">Clear</a>
+            <button style="width: 11%" type="submit" class="pure-button" name="action" value="add">Save</button>
+            <button style="width: 11%" type="submit" class="pure-button">Clear</button>
         </fieldset>
     </form>
     <h2>"<a href="/topjava">Домой"</a></h2>

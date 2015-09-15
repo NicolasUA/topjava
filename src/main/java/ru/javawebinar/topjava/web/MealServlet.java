@@ -32,37 +32,46 @@ public class MealServlet extends HttpServlet {
     );
     private LinkedList<UserMeal> list = new LinkedList<>(mealList);
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("redirect to mealList");
 
+        request.setAttribute("mealList", UserMealsUtil.getFilteredMealsWithExceeded(list, LocalTime.of(0, 0), LocalTime.of(23, 59), 2000));
+        request.getRequestDispatcher("/mealList.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+
         if ("delete".equals(request.getParameter("action"))) {
-            list.remove(Integer.parseInt(request.getParameter("id")));
-            LOG.debug("delete meat");
+            UserMeal newMeal = list.remove(Integer.parseInt(request.getParameter("id")));
+            LOG.debug("delete meat" + newMeal);
+            System.out.println(newMeal);
         }
-        UserMeal newMeal = null;
-        Integer id = null;
+
         if ("edit".equals(request.getParameter("action"))) {
-            id = Integer.parseInt(request.getParameter("id"));
-            newMeal = list.get(id);
-            LOG.debug("edit meal");
+            Integer id = Integer.parseInt(request.getParameter("id"));
+            request.setAttribute("id", id);
+            UserMeal newMeal = list.get(id);
+            request.setAttribute("editMeal", newMeal);
+            LOG.debug("edit meal" + newMeal);
         }
+
         if ("add".equals(request.getParameter("action"))) {
-            newMeal = new UserMeal(LocalDateTime.parse(request.getParameter("dateTime"), DATEFORMAT),
+            UserMeal newMeal = new UserMeal(LocalDateTime.parse(request.getParameter("dateTime"), DATEFORMAT),
                     request.getParameter("description"),
                     Integer.parseInt(request.getParameter("calories")));
             try {
                 list.remove(Integer.parseInt(request.getParameter("id")));
             } catch (Exception e) {}
             list.add(newMeal);
-            LOG.debug("save meal");
+            LOG.debug("save meal" + newMeal);
             list.sort((o1, o2) -> o1.getDateTime().compareTo(o2.getDateTime()));
-            newMeal = null;
-            id = null;
         }
 
-        request.setAttribute("mealList", UserMealsUtil.getFilteredMealsWithExceeded(list, LocalTime.of(0, 0), LocalTime.of(23, 59), 2000));
-        request.setAttribute("editMeal", newMeal);
-        request.setAttribute("id", id);
-        request.getRequestDispatcher("/mealList.jsp").forward(request, response);
+        doGet(request, response);
     }
+
+
 }
