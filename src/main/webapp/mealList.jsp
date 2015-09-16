@@ -22,14 +22,14 @@
         </thead>
         <tbody>
             <c:forEach items="${mealList}" var="meal" varStatus="loopCounter">
-                <tr style="color: ${meal.isExceed() ? "red" : "green"}">
+                <tr style="color: ${meal.exceed ? "red" : "green"}">
                     <td align="center">
                         <%=((UserMealWithExceed)pageContext.findAttribute("meal"))
                             .getDateTime().format(MealServlet.DATEFORMAT)
                         %>
                     </td>
-                    <td>${meal.getDescription()}</td>
-                    <td align="center">${meal.getCalories()}</td>
+                    <td>${meal.description}</td>
+                    <td align="center">${meal.calories}</td>
                     <td align="center">
                         <form style="margin: 0" class="pure-form" method="post" action="meal">
                             <input type="hidden" name="id" value="${loopCounter.count - 1}">
@@ -49,9 +49,9 @@
                    value="<%=pageContext.findAttribute("editMeal") == null ? "" :
                         ((UserMeal)pageContext.findAttribute("editMeal")).getDateTime().format(MealServlet.DATEFORMAT)%>">
             <input style="width: 40%" type="text" placeholder="Description" name="description"
-                   value="${editMeal.getDescription()}">
+                   value="${editMeal.description}">
             <input style="width: 10%; text-align: center" type="number" placeholder="Calories" name="calories"
-                   value="${editMeal.getCalories()}">
+                   value="${editMeal.calories}">
             <input type="hidden" name="id" value="${id}">
             <button style="width: 11%" type="submit" class="pure-button" name="action" value="add">Save</button>
             <button style="width: 11%" type="submit" class="pure-button">Clear</button>
