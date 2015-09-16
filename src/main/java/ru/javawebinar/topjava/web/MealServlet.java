@@ -47,7 +47,6 @@ public class MealServlet extends HttpServlet {
         if ("delete".equals(request.getParameter("action"))) {
             UserMeal newMeal = list.remove(Integer.parseInt(request.getParameter("id")));
             LOG.debug("delete meat" + newMeal);
-            System.out.println(newMeal);
         }
 
         if ("edit".equals(request.getParameter("action"))) {
@@ -64,7 +63,7 @@ public class MealServlet extends HttpServlet {
                     Integer.parseInt(request.getParameter("calories")));
             try {
                 list.remove(Integer.parseInt(request.getParameter("id")));
-            } catch (Exception e) {}
+            } catch (Exception e) { }
             list.add(newMeal);
             LOG.debug("save meal" + newMeal);
             list.sort((o1, o2) -> o1.getDateTime().compareTo(o2.getDateTime()));
