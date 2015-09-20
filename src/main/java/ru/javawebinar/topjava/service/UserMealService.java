@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.service;
 
+import ru.javawebinar.topjava.Filter;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -18,6 +19,8 @@ public interface UserMealService {
     public UserMeal get(int id) throws NotFoundException;
 
     public List<UserMeal> getAll(int userId);
+
+    public List<UserMeal> getFiltered(int userId, Filter filter);
 
     public void update(UserMeal userMeal);
 }

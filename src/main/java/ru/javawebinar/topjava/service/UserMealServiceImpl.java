@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.javawebinar.topjava.Filter;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
 import ru.javawebinar.topjava.util.exception.ExceptionUtil;
@@ -37,6 +38,11 @@ public class UserMealServiceImpl implements UserMealService {
     @Override
     public List<UserMeal> getAll(int userId) {
         return repository.getAll(userId);
+    }
+
+    @Override
+    public List<UserMeal> getFiltered(int userId, Filter filter) {
+        return repository.getFiltered(userId, filter);
     }
 
     @Override

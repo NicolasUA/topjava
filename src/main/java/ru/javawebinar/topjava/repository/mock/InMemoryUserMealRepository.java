@@ -1,8 +1,10 @@
 package ru.javawebinar.topjava.repository.mock;
 
 import org.springframework.stereotype.Repository;
+import ru.javawebinar.topjava.Filter;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
+import ru.javawebinar.topjava.util.TimeUtil;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -54,6 +56,15 @@ public class InMemoryUserMealRepository implements UserMealRepository {
                 .values()
                 .stream()
                 .filter(userMeal -> userMeal.getUserId() == userId)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserMeal> getFiltered(int userId, Filter filter) {
+        return repository
+                .values()
+                .stream()
+                .filter(userMeal -> (userMeal.getUserId() == userId && TimeUtil.isBetween(userMeal.getDateTime(), filter)))
                 .collect(Collectors.toList());
     }
 }

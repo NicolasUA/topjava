@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.repository;
 
+import ru.javawebinar.topjava.Filter;
 import ru.javawebinar.topjava.model.UserMeal;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface UserMealRepository {
     UserMeal get(int id);
 
     List<UserMeal> getAll(int userId);
+
+    List<UserMeal> getFiltered(int userId, Filter filter);
 }

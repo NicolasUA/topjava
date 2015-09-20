@@ -30,8 +30,6 @@
             <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.model.UserMealWithExceed"/>
             <tr class="${meal.exceed ? 'exceeded' : 'normal'}">
                 <td>
-                   <%--<fmt:parseDate value="${meal.dateTime}" pattern="y-M-dd'T'H:m" var="parsedDate"/>--%>
-                   <%--<fmt:formatDate value="${parsedDate}" pattern="yyyy.MM.dd HH:mm" />--%>
                     <%=TimeUtil.toString(meal.getDateTime())%>
                 </td>
                 <td>${meal.description}</td>
@@ -41,6 +39,46 @@
             </tr>
         </c:forEach>
     </table>
+    <label>Filter</label>
+    <form method="get" action="meals">
+        <c:set var="filter" value="${filter}"/>
+        <jsp:useBean id="filter" scope="page" type="ru.javawebinar.topjava.Filter"/>
+        <table>
+            <tr>
+                <td>
+                    <Label>User:</Label>
+                    <select size="1" name="userId">
+                        <c:forEach items="${userList}" var="user">
+                            <jsp:useBean id="user" scope="page" type="ru.javawebinar.topjava.model.User"/>
+                            <option value="${user.id}" ${userId == user.id ? 'selected' : ''}>${user.name}</option>
+                        </c:forEach>
+                    </select>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <Label>From Date</Label>
+                    <input type="date" value="${filter.fromDate}" placeholder="Start Date" name="fromDate"></dd>
+                </td>
+                <td>
+                    <Label>To Date</Label>
+                    <input type="date" value="${filter.toDate}" placeholder="End Date" name="toDate"></dd>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <Label>From Time</Label>
+                    <input type="time" value="${filter.fromTime}" placeholder="Start Time" name="fromTime"></dd>
+                </td>
+                <td>
+                    <Label>To Time</Label>
+                    <input type="time" value="${filter.toTime}" placeholder="End Time" name="toTime"></dd>
+                </td>
+            </tr>
+        </table>
+        <button type="submit" name="action" value="filter">Apply</button>
+    </form>
 </section>
 </body>
 </html>

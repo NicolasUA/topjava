@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.web.meal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import ru.javawebinar.topjava.Filter;
 import ru.javawebinar.topjava.LoggerWrapper;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.service.UserMealServiceImpl;
@@ -22,6 +23,11 @@ public class UserMealRestController {
     public List<UserMeal> getAll(int userId) {
         LOG.info("getAll for " + userId);
         return service.getAll(userId);
+    }
+
+    public List<UserMeal> getFiltered(int userId, Filter filter) {
+        LOG.info("getFiltered for " + userId);
+        return service.getFiltered(userId, filter);
     }
 
     public UserMeal get(int id) {
