@@ -14,9 +14,9 @@ public interface UserMealService {
 
     public UserMeal save(UserMeal userMeal);
 
-    public void delete(int id) throws NotFoundException;
+    public void delete(int id, int userId) throws NotFoundException;
 
-    public UserMeal get(int id) throws NotFoundException;
+    public UserMeal get(int id, int userId) throws NotFoundException;
 
     public List<UserMeal> getAll(int userId);
 

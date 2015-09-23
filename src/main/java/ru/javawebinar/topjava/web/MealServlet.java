@@ -32,9 +32,7 @@ public class MealServlet extends HttpServlet {
 
     private UserMealRestController mealController;
     private AdminRestController adminController;
-    private User user;
     private Filter filter;
-    private List<User> userList;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -43,8 +41,6 @@ public class MealServlet extends HttpServlet {
             adminController = appCtx.getBean(AdminRestController.class);
             mealController = appCtx.getBean(UserMealRestController.class);
         }
-        userList = adminController.getAll();
-        user = userList.get(0);
         filter = new Filter();
     }
 
@@ -55,7 +51,7 @@ public class MealServlet extends HttpServlet {
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.valueOf(request.getParameter("calories")),
-                user.getId());
+                LoggedUser.getId());
         if (id.isEmpty()) {
             LOG.info("Create {}" , userMeal);
             mealController.create(userMeal);
@@ -72,9 +68,10 @@ public class MealServlet extends HttpServlet {
         if (action == null) {
             LOG.info("getAll");
             request.setAttribute("mealList",
-                    UserMealsUtil.getWithExceeded(mealController.getFiltered(user.getId(), filter), user.getCaloriesPerDay()));
-            request.setAttribute("userList", userList);
-            request.setAttribute("userId", user.getId());
+                    UserMealsUtil.getWithExceeded(mealController.getFiltered(filter),
+                            adminController.get(LoggedUser.getId()).getCaloriesPerDay()));
+            request.setAttribute("userList", adminController.getAll());
+            request.setAttribute("userId", LoggedUser.getId());
             request.setAttribute("filter", filter);
             request.getRequestDispatcher("/mealList.jsp").forward(request, response);
         } else if (action.equals("delete")) {
@@ -83,7 +80,7 @@ public class MealServlet extends HttpServlet {
             mealController.delete(id);
             response.sendRedirect("meals");
         } else if (action.equals("filter")) {
-            user = adminController.get(Integer.parseInt(request.getParameter("userId")));
+            LoggedUser.setId(Integer.parseInt(request.getParameter("userId")));
             filter.setFromDate(request.getParameter("fromDate").isEmpty() ? null :
                     LocalDate.parse(request.getParameter("fromDate")));
             filter.setToDate(request.getParameter("toDate").isEmpty() ? null :
@@ -95,7 +92,7 @@ public class MealServlet extends HttpServlet {
             response.sendRedirect("meals");
         } else {
             final UserMeal meal = action.equals("create") ?
-                    new UserMeal(LocalDateTime.now(), "", 1000, LoggedUser.id()) :
+                    new UserMeal(LocalDateTime.now(), "", 1000, LoggedUser.getId()) :
                     mealController.get(getId(request));
             request.setAttribute("meal", meal);
             request.getRequestDispatcher("mealEdit.jsp").forward(request, response);

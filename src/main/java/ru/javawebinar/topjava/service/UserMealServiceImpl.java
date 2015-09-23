@@ -26,13 +26,13 @@ public class UserMealServiceImpl implements UserMealService {
     }
 
     @Override
-    public void delete(int id) throws NotFoundException {
-        ExceptionUtil.check(repository.delete(id), id);
+    public void delete(int id, int userId) throws NotFoundException {
+        ExceptionUtil.check(repository.delete(id, userId), id);
     }
 
     @Override
-    public UserMeal get(int id) throws NotFoundException {
-        return ExceptionUtil.check(repository.get(id), id);
+    public UserMeal get(int id, int userId) throws NotFoundException {
+        return ExceptionUtil.check(repository.get(id, userId), id);
     }
 
     @Override

@@ -12,9 +12,9 @@ import java.util.List;
 public interface UserMealRepository {
     UserMeal save(UserMeal userMeal);
 
-    boolean delete(int id);
+    boolean delete(int id, int userId);
 
-    UserMeal get(int id);
+    UserMeal get(int id, int userId);
 
     List<UserMeal> getAll(int userId);
 

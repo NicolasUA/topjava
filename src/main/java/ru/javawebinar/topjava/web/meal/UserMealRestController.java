@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.web.meal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.Filter;
+import ru.javawebinar.topjava.LoggedUser;
 import ru.javawebinar.topjava.LoggerWrapper;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.service.UserMealServiceImpl;
@@ -20,19 +21,19 @@ public class UserMealRestController {
     @Autowired
     private UserMealServiceImpl service;
 
-    public List<UserMeal> getAll(int userId) {
-        LOG.info("getAll for " + userId);
-        return service.getAll(userId);
+    public List<UserMeal> getAll() {
+        LOG.info("getAll for " + LoggedUser.getId());
+        return service.getAll(LoggedUser.getId());
     }
 
-    public List<UserMeal> getFiltered(int userId, Filter filter) {
-        LOG.info("getFiltered for " + userId);
-        return service.getFiltered(userId, filter);
+    public List<UserMeal> getFiltered(Filter filter) {
+        LOG.info("getFiltered for " + LoggedUser.getId());
+        return service.getFiltered(LoggedUser.getId(), filter);
     }
 
     public UserMeal get(int id) {
         LOG.info("get " + id);
-        return service.get(id);
+        return service.get(id, LoggedUser.getId());
     }
 
     public UserMeal create(UserMeal userMeal) {
@@ -43,7 +44,7 @@ public class UserMealRestController {
 
     public void delete(int id) {
         LOG.info("delete " + id);
-        service.delete(id);
+        service.delete(id, LoggedUser.getId());
     }
 
     public void update(UserMeal userMeal, int id) {
