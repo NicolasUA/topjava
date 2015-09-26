@@ -9,4 +9,8 @@ public class LoggedUser {
     public static int id() {
         return 1;
     }
+
+    public static int getCaloriesPerDay() {
+        return 2000;
+    }
 }
