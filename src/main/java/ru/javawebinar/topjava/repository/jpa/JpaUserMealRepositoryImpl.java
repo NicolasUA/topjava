@@ -42,7 +42,7 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
                 .setParameter("description", userMeal.getDescription())
                 .setParameter("calories", userMeal.getCalories())
                 .setParameter("date_time", userMeal.getDateTime())
-                .setParameter("user", em.getReference(User.class, userId))
+                .setParameter("userId", userId)
                 .executeUpdate() == 0) {
             return null;
         }
@@ -54,7 +54,7 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
     public boolean delete(int id, int userId) {
         return em.createNamedQuery(UserMeal.DELETE)
                 .setParameter("id", id)
-                .setParameter("user", em.getReference(User.class, userId))
+                .setParameter("userId", userId)
                 .executeUpdate() != 0;
     }
 
@@ -62,7 +62,7 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
     public UserMeal get(int id, int userId) {
         List<UserMeal> meals =  em.createNamedQuery(UserMeal.GET, UserMeal.class)
                 .setParameter("id", id)
-                .setParameter("user", em.getReference(User.class, userId))
+                .setParameter("userId", userId)
                 .getResultList();
         return DataAccessUtils.singleResult(meals);
     }
@@ -70,14 +70,14 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
     @Override
     public List<UserMeal> getAll(int userId) {
         return em.createNamedQuery(UserMeal.ALL_SORTED, UserMeal.class)
-                .setParameter("user", em.getReference(User.class, userId))
+                .setParameter("userId", userId)
                 .getResultList();
     }
 
     @Override
     public List<UserMeal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         return em.createNamedQuery(UserMeal.GET_BETWEEN, UserMeal.class)
-                .setParameter("user", em.getReference(User.class, userId))
+                .setParameter("userId", userId)
                 .setParameter("start", startDate)
                 .setParameter("end", endDate)
                 .getResultList();

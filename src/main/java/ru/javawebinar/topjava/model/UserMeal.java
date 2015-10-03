@@ -1,9 +1,9 @@
 package ru.javawebinar.topjava.model;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import ru.javawebinar.topjava.repository.jpa.LocalDateTimePersistenceConverter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
  * 11.01.2015.
  */
 @NamedQueries({
-        @NamedQuery(name = UserMeal.GET, query = "SELECT m FROM UserMeal m WHERE m.id=:id and m.user=:user"),
-        @NamedQuery(name = UserMeal.DELETE, query = "DELETE FROM UserMeal m WHERE m.id=:id and m.user=:user"),
-        @NamedQuery(name = UserMeal.ALL_SORTED, query = "SELECT m FROM UserMeal m WHERE m.user=:user ORDER BY m.dateTime DESC"),
-        @NamedQuery(name = UserMeal.GET_BETWEEN, query = "SELECT m FROM UserMeal m WHERE m.user=:user AND m.dateTime BETWEEN :start AND :end ORDER BY m.dateTime DESC"),
-        @NamedQuery(name = UserMeal.MERGE, query = "UPDATE UserMeal m SET m.description=:description, m.calories=:calories, m.dateTime=:date_time WHERE m.id=:id AND m.user=:user"),
+        @NamedQuery(name = UserMeal.GET, query = "SELECT m FROM UserMeal m WHERE m.id=:id and m.user.id=:userId"),
+        @NamedQuery(name = UserMeal.DELETE, query = "DELETE FROM UserMeal m WHERE m.id=:id and m.user.id=:userId"),
+        @NamedQuery(name = UserMeal.ALL_SORTED, query = "SELECT m FROM UserMeal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC"),
+        @NamedQuery(name = UserMeal.GET_BETWEEN, query = "SELECT m FROM UserMeal m WHERE m.user.id=:userId AND m.dateTime BETWEEN :start AND :end ORDER BY m.dateTime DESC"),
+        @NamedQuery(name = UserMeal.MERGE, query = "UPDATE UserMeal m SET m.description=:description, m.calories=:calories, m.dateTime=:date_time WHERE m.id=:id AND m.user.id=:userId"),
 })
 @Entity
 @Table(name = "meals")
@@ -28,7 +28,7 @@ public class UserMeal extends BaseEntity {
     public static final String MERGE = "Meal.merge";
 
     @Column(name = "date_time", nullable = false, columnDefinition = "timestamp default now()")
-    @NotEmpty
+    @NotNull
     @Convert(converter = LocalDateTimePersistenceConverter.class)
     protected LocalDateTime dateTime;
 
@@ -36,7 +36,7 @@ public class UserMeal extends BaseEntity {
     protected String description;
 
     @Column(name = "calories", nullable = false)
-    @NotEmpty
+    @NotNull
     protected int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
