@@ -22,14 +22,7 @@ import java.util.Collections;
 import static ru.javawebinar.topjava.Profiles.POSTGRES;
 import static ru.javawebinar.topjava.UserTestData.*;
 
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@RunWith(SpringJUnit4ClassRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles(POSTGRES)
-public class UserServiceTest {
+public class UserServiceTest extends ServiceTest{
 
     @Autowired
     protected UserService service;
@@ -47,8 +40,9 @@ public class UserServiceTest {
         MATCHER.assertCollectionEquals(Arrays.asList(ADMIN, tu, USER), service.getAll());
     }
 
-    @Test(expected = DataAccessException.class)
+    @Test
     public void testDuplicateMailSave() throws Exception {
+        thrown.expect(DataAccessException.class);
         service.save(new TestUser("Duplicate", "user@yandex.ru", "newPass", Role.ROLE_USER).asUser());
     }
 
@@ -58,8 +52,9 @@ public class UserServiceTest {
         MATCHER.assertCollectionEquals(Collections.singletonList(ADMIN), service.getAll());
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void testNotFoundDelete() throws Exception {
+        thrown.expect(NotFoundException.class);
         service.delete(1);
     }
 
@@ -69,8 +64,9 @@ public class UserServiceTest {
         MATCHER.assertEquals(USER, user);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void testGetNotFound() throws Exception {
+        thrown.expect(NotFoundException.class);
         service.get(1);
     }
 
