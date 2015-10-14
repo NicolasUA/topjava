@@ -23,7 +23,7 @@ import static ru.javawebinar.topjava.Profiles.POSTGRES;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 @ActiveProfiles(POSTGRES)
-public class ServiceTest {
+public abstract class ServiceTest {
     private static final LoggerWrapper LOG = LoggerWrapper.get(ServiceTest.class);
 
     @Rule

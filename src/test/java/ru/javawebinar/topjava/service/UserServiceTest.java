@@ -22,7 +22,7 @@ import java.util.Collections;
 import static ru.javawebinar.topjava.Profiles.POSTGRES;
 import static ru.javawebinar.topjava.UserTestData.*;
 
-public class UserServiceTest extends ServiceTest{
+public abstract class UserServiceTest extends ServiceTest{
 
     @Autowired
     protected UserService service;
