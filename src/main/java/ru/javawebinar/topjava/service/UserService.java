@@ -23,6 +23,6 @@ public interface UserService {
     Collection<User> getAll();
 
     void update(User user) throws NotFoundException;
-    
+
     void evictCache();
 }
