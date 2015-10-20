@@ -8,14 +8,15 @@
 <jsp:include page="fragments/bodyHeader.jsp"/>
 
 <section>
+    <h3><fmt:message key="user.list"/></h3>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Roles</th>
-            <th>Active</th>
-            <th>Registered</th>
+            <th><fmt:message key="user.name"/></th>
+            <th><fmt:message key="user.email"/></th>
+            <th><fmt:message key="user.roles"/></th>
+            <th><fmt:message key="user.active"/></th>
+            <th><fmt:message key="user.registered"/></th>
         </tr>
         </thead>
         <c:forEach items="${userList}" var="user">
