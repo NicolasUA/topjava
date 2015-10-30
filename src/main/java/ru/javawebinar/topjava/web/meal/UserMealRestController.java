@@ -30,6 +30,7 @@ public class UserMealRestController extends AbstractUserMealController {
     }
 
     @RequestMapping(value = "/by", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+/*
     public List<UserMealWithExceed> getBetween(@RequestParam("startDate") String startDateStr,
                                                @RequestParam("endDate") String endDateStr,
                                                @RequestParam("startTime") String startTimeStr,
@@ -39,6 +40,16 @@ public class UserMealRestController extends AbstractUserMealController {
         LocalTime startTime = TimeUtil.parseLocalTime(startTimeStr, LocalTime.MIN);
         LocalTime endTime = TimeUtil.parseLocalTime(endTimeStr, LocalTime.MAX);
         return super.getBetween(startDate, startTime, endDate, endTime);
+    }
+*/
+    public List<UserMealWithExceed> getBetween(@RequestParam(value = "startDate", required = false) LocalDate startDate,
+                                               @RequestParam(value = "endDate", required = false) LocalDate endDate,
+                                               @RequestParam(value = "startTime", required = false) LocalTime startTime,
+                                               @RequestParam(value = "endTime", required = false) LocalTime endTime) {
+        return super.getBetween(startDate == null ? TimeUtil.MIN_DATE : startDate,
+                startTime == null ? LocalTime.MIN : startTime,
+                endDate == null ? TimeUtil.MAX_DATE : endDate,
+                endTime == null ? LocalTime.MAX : endTime);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
