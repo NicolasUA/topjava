@@ -14,8 +14,34 @@ function makeEditable() {
         return false;
     });
 
+    $('#filter').submit(function () {
+        filterTable();
+        return false;
+    });
+
+    $('.enable').click(function () {
+        enable($(this), $(this).attr("id"));
+    });
+
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
+    });
+
+    $('.date-picker').datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d',
+        lang:'ru'
+    });
+
+    $('.time-picker').datetimepicker({
+        datepicker: false,
+        format: 'H:i',
+        lang:'ru'
+    });
+
+    $('.datetime-picker').datetimepicker({
+        format: 'Y-m-d H:i',
+        lang:'ru'
     });
 }
 
@@ -40,9 +66,25 @@ function updateTable() {
     });
 }
 
+function filterTable() {
+    var form = $('#filter');
+    $.ajax({
+        type: "POST",
+        url: ajaxUrl + "filter",
+        data: form.serialize(),
+        success: successNoty('Filtered')
+    }).done(function (data) {
+        oTable_datatable.fnClearTable();
+        $.each(data, function (key, item) {
+            oTable_datatable.fnAddData(item);
+        });
+        oTable_datatable.fnDraw();
+    });
+}
+
 function save() {
     var form = $('#detailsForm');
-    debugger;
+//    debugger;
     $.ajax({
         type: "POST",
         url: ajaxUrl,
@@ -51,6 +93,18 @@ function save() {
             $('#editRow').modal('hide');
             updateTable();
             successNoty('Saved');
+        }
+    });
+}
+
+function enable(checkbox, id) {
+    var enabled = checkbox.is(':checked');
+    $.ajax({
+        type: "POST",
+        url: ajaxUrl + id + '/enable',
+        data: 'enabled=' + enabled,
+        success: function () {
+            successNoty(enabled ? 'Enabled' : 'Disabled');
         }
     });
 }

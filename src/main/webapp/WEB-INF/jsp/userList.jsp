@@ -37,7 +37,7 @@
                             <td><a href="mailto:${user.email}">${user.email}</a></td>
                             <td>${user.roles}</td>
                             <td>
-                                <input type="checkbox"
+                                <input type="checkbox" class="enable"
                                        <c:if test="${user.enabled}">checked</c:if> id="${user.id}"/>
                             </td>
                             <td><fmt:formatDate value="${user.registered}" pattern="dd-MMMM-yyyy"/></td>
