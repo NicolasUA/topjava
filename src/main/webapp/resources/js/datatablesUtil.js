@@ -6,7 +6,7 @@ function makeEditable() {
     });
 
     $('.delete').click(function () {
-        deleteRow($(this).attr("id"));
+        deleteRow($(this).closest('tr').attr('id'));
     });
 
     $('#detailsForm').submit(function () {
@@ -20,7 +20,7 @@ function makeEditable() {
     });
 
     $('.enable').click(function () {
-        enable($(this), $(this).attr("id"));
+        enable($(this), $(this).closest('tr').attr('id'));
     });
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
