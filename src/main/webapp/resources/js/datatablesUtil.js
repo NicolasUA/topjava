@@ -40,7 +40,7 @@ function makeEditable() {
     });
 
     $('.datetime-picker').datetimepicker({
-        format: 'Y-m-d H:i',
+        format: 'Y-m-d\\TH:i',
         lang:'ru'
     });
 }
@@ -58,11 +58,7 @@ function deleteRow(id) {
 
 function updateTable() {
     $.get(ajaxUrl, function (data) {
-        oTable_datatable.fnClearTable();
-        $.each(data, function (key, item) {
-            oTable_datatable.fnAddData(item);
-        });
-        oTable_datatable.fnDraw();
+        oTable_datatable.clear().rows.add(data).draw();
     });
 }
 
@@ -74,11 +70,7 @@ function filterTable() {
         data: form.serialize(),
         success: successNoty('Filtered')
     }).done(function (data) {
-        oTable_datatable.fnClearTable();
-        $.each(data, function (key, item) {
-            oTable_datatable.fnAddData(item);
-        });
-        oTable_datatable.fnDraw();
+        oTable_datatable.clear().rows.add(data).draw();
     });
 }
 

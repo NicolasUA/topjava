@@ -112,7 +112,6 @@
 
     //            $(document).ready(function () {
     $(function () {
-        oTable_datatable = $('#datatable');
         oTable_datatable_params = {
             "bPaginate": false,
             "bInfo": false,
@@ -149,7 +148,7 @@
             ]
         };
 
-        oTable_datatable.dataTable(oTable_datatable_params);
+        oTable_datatable = $('#datatable').DataTable(oTable_datatable_params);
         makeEditable();
     });
 </script>
