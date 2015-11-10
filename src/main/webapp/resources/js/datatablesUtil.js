@@ -1,21 +1,27 @@
 function makeEditable() {
+    form = $('#detailsForm');
 
     $('#add').click(function () {
         $('#id').val(0);
         $('#editRow').modal();
     });
 
-    $('.delete').click(function () {
-        deleteRow($(this).closest('tr').attr("id"));
-    });
-
-    $('#detailsForm').submit(function () {
+    form.submit(function () {
         save();
         return false;
     });
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
+    });
+}
+
+function updateRow(id) {
+    $.get(ajaxUrl + id, function (data) {
+        $.each(data, function (key, value) {
+            form.find("input[name='" + key + "']").val(value);
+        });
+        $('#editRow').modal();
     });
 }
 
@@ -30,12 +36,11 @@ function deleteRow(id) {
     });
 }
 
-function enable(chkbox) {
+function enable(chkbox, id) {
     var enabled = chkbox.is(":checked");
-    var row = chkbox.closest('tr');
-    row.css("text-decoration", enabled ? "none" : "line-through");
+    chkbox.closest('tr').css("text-decoration", enabled ? "none" : "line-through");
     $.ajax({
-        url: ajaxUrl + row.attr('id'),
+        url: ajaxUrl + id,
         type: 'POST',
         data: 'enabled=' + enabled,
         success: function () {
@@ -45,16 +50,10 @@ function enable(chkbox) {
 }
 
 function updateTableByData(data) {
-    datatableApi.clear();
-    $.each(data, function (key, item) {
-        datatableApi.row.add(item);
-    });
-    datatableApi.draw();
-    init();
+    datatableApi.clear().rows.add(data).draw();
 }
 
 function save() {
-    var form = $('#detailsForm');
     $.ajax({
         type: "POST",
         url: ajaxUrl,
@@ -89,8 +88,24 @@ function successNoty(text) {
 function failNoty(event, jqXHR, options, jsExc) {
     closeNote();
     failedNote = noty({
-        text: 'Failed: ' + jqXHR.statusText + "<br>",
+        text: 'Failed: ' + jqXHR.statusText + "<br>" + jqXHR.responseJSON,
         type: 'error',
         layout: 'bottomRight'
     });
 }
+
+function renderEditBtn(data, type, row) {
+    if (type == 'display') {
+        return '<a class="btn btn-xs btn-primary" onclick="updateRow(' + row.id + ');">Edit</a>';
+    }
+    return data;
+}
+
+function renderDeleteBtn(data, type, row) {
+    if (type == 'display') {
+        debugger;
+        return '<a class="btn btn-xs btn-danger" onclick="deleteRow(' + row.id + ');">Delete</a>';
+    }
+    return data;
+}
+
