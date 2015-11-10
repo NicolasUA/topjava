@@ -14,6 +14,22 @@ function makeEditable() {
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
     });
+
+    $('.date-picker').datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d',
+        lang: 'ru'
+    });
+    $('.time-picker').datetimepicker({
+        datepicker: false,
+        format: 'H:i',
+        lang: 'ru'
+    });
+    $('.datetime-picker').datetimepicker({
+        format: 'Y-m-d H:i',
+        lang: 'ru'
+    });
+
 }
 
 function updateRow(id) {
@@ -103,7 +119,6 @@ function renderEditBtn(data, type, row) {
 
 function renderDeleteBtn(data, type, row) {
     if (type == 'display') {
-        debugger;
         return '<a class="btn btn-xs btn-danger" onclick="deleteRow(' + row.id + ');">Delete</a>';
     }
     return data;
