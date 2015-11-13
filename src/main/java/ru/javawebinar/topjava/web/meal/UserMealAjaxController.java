@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.to.UserMealWithExceed;
 import ru.javawebinar.topjava.util.TimeUtil;
+import ru.javawebinar.topjava.util.exception.ValidationException;
 import ru.javawebinar.topjava.web.ExceptionInfoHandler;
 
 import javax.validation.Valid;
@@ -39,12 +40,14 @@ public class UserMealAjaxController extends AbstractUserMealController implement
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> updateOrCreate(@Valid UserMeal meal, BindingResult result) {
+    public ResponseEntity<String> updateOrCreate(@Valid UserMeal meal, BindingResult result) throws Exception {
         if (result.hasErrors()) {
-            // TODO change to exception handler
             StringBuilder sb = new StringBuilder();
             result.getFieldErrors().forEach(fe -> sb.append(fe.getField()).append(" ").append(fe.getDefaultMessage()).append("<br>"));
+            throw new ValidationException(sb.toString());
+/*
             return new ResponseEntity<>(sb.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
+*/
         }
         if (meal.getId() == 0) {
             super.create(meal);

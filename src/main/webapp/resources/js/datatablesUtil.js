@@ -97,7 +97,7 @@ function failNoty(event, jqXHR, options, jsExc) {
     var errorInfo = $.parseJSON(jqXHR.responseText);
 
     failedNote = noty({
-        text: 'Failed: ' + jqXHR.statusText + "<br>" + errorInfo.cause + "<br>" + errorInfo.detail,
+        text: 'Failed: ' + jqXHR.statusText + "<br>" + errorInfo.detail,
         type: 'error',
         layout: 'bottomRight'
     });
