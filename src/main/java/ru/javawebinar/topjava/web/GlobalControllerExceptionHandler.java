@@ -34,6 +34,15 @@ public class GlobalControllerExceptionHandler {
         return mav;
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @Order(Ordered.LOWEST_PRECEDENCE)
+    ModelAndView handleError(HttpServletRequest req, DataIntegrityViolationException e) {
+        LOG.error("Exception at request " + req.getRequestURL());
+        ModelAndView mav = new ModelAndView("exception/exception");
+        mav.addObject("exception", e.getRootCause());
+        return mav;
+    }
+
     @ExceptionHandler(Exception.class)
     @Order(Ordered.LOWEST_PRECEDENCE)
     ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
