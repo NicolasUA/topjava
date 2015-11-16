@@ -4,5 +4,8 @@
 <div class="footer">
     <div class="container">
         <fmt:message key="app.footer"/>
+        <div align="right">
+            <a href=${requestScope['javax.servlet.forward.request_uri']}?lang=en>Eng</a>|<a href=${requestScope['javax.servlet.forward.request_uri']}?lang=ru>Rus</a>
+        </div>
     </div>
 </div>
